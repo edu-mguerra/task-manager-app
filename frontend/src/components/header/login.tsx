@@ -40,7 +40,7 @@ export const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="login-form-container">
       <input
         type="email"
         value={email}
@@ -55,9 +55,10 @@ export const Login = () => {
         placeholder="Password"
         required
       />
-      <p className='createU' onClick={handleCreateUser}>Criar usuarios</p>
+      <p className='createU' onClick={handleCreateUser}>Criar usuário</p>
       <button type="submit">Login</button>
       {message && <p>{message}</p>}
     </form>
   );
+
 };

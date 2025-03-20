@@ -12,6 +12,7 @@ export const TaskList = () => {
     if (userId) {
       axios.get(`http://localhost:3000/tasks/${userId}`)
         .then((response) => {
+          console.log(response.data)
           setTasks(response.data);
         })
         .catch((error) => {
@@ -30,7 +31,6 @@ export const TaskList = () => {
   };
 
   const handleDeleteTask = (id: string) => {
-    // Lógica para deletar a tarefa
     axios.delete(`http://localhost:3000/tasks/${id}`)
       .then(() => {
         setTasks(tasks.filter((task) => task.id !== id));
@@ -48,32 +48,40 @@ export const TaskList = () => {
     <>
       <div className="task-list-container">
         <h1>Tarefas</h1>
-        <ul>
-          {tasks.map((task) => (
-            <li key={task.id} className="task-item">
-              <h3>{task.title}</h3>
+        <div className='scroll'>
+          <ul>
+            {tasks.map((task) => (
+              <li key={task.id} className="task-item">
+                <h3>{task.title}</h3>
+                <p>{task.description}</p>
 
-              <p>{task.description}</p>
 
-              <div className="task-actions">
-                <div className="trash" onClick={() => handleDeleteTask(task.id)}>
-                  🗑️ Deletar
+                {task.Category && (
+                  <p><strong>Categoria:</strong> {task.Category.name}</p>
+                )}
+
+                {task.dueDate && (
+                  <p><strong>Data Limite:</strong> {new Date(task.dueDate).toLocaleDateString()}</p>
+                )}
+
+                <div className="task-actions">
+                  <div className="trash" onClick={() => handleDeleteTask(task.id)}>
+                    🗑️ Deletar
+                  </div>
+                  <div className="update" onClick={() => handleUpdateTask(task.id)}>
+                    ✏️ Atualizar
+                  </div>
                 </div>
-                <div className="update" onClick={() => handleUpdateTask(task.id)}>
-                  ✏️ Atualizar
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      {/* Botões de ação */}
       <div className="action-buttons">
         <button onClick={handleAddTask} className="action-btn">Adicionar Tarefa</button>
         <button onClick={handleLogout} className="action-btn">Sair</button>
       </div>
     </>
   );
-
 };
